@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Fetch y peticiones</title>
+        <script async defer src='./main.js'></script>
+        <!-- <script async defer src='./fetch.js'></script> -->
+        <link rel='stylesheet' href='./styles.css'>
+</head>
+
+<body>
+        <button id='btn-counter'>Counter ++</button>
+        <p id='counter'></p>
+
+        <div class='container'>
+                <div class='card-container'>
+                        <h2 id="pkm-name">Pikachu N.° <span id="pkm-id">0025</span></h2>
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+                                alt="Pokémon official artwork" class="pkm-artwork">
+                        <p id="pkm-description">When several of
+                                these POKéMON
+                                gather, their electricity could
+                                build and cause
+                                lightning storms.</p>
+
+                        <div class="pkm-data-container">
+                                <h3>Data</h3>
+
+                                <div class="data">
+                                        <div class="height-container">
+                                                <h4>Height</h4>
+                                                <p class=""><span class="pkm-height">0.4</span> m</p>
+                                        </div>
+                                        <div class="weight-container">
+                                                <h4>Weight</h4>
+                                                <p><span class="pkm-weight">6.0</span> kg</p>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+                <div class="container row">
+                        <label for="poke-name">Pokemon (Name / ID)</label>
+                        <input id='poke-name' type="text" name="poke-name" value="">
+                </div>
+                <div class='container row'>
+                        <button id='previous-btn' class='btn primary'>Previous</button>
+                        <button id='get-btn' class='btn primary'>Get Pokemon</button>
+                        <button id='next-btn' class='btn primary'>Next</button>
+                </div>
+        </div>
+</body>
+
+</html>
