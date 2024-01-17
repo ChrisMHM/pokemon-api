@@ -1,12 +1,10 @@
-const getBtn = document.querySelector('#get-btn');
-const pokeName = document.querySelector('#poke-name');
-const cardContainer = document.querySelector('.card-container');
 const URL_PKM = 'https://pokeapi.co/api/v2/pokemon/';
 const URL_PKM_SPCS = 'https://pokeapi.co/api/v2/pokemon-species/';
 const LAST_PKMN = 1008;
 const FIRST_PKMN = 1;
 
-getBtn.addEventListener('click', async () => {
+document.querySelector('#get-btn').addEventListener('click', async () => {
+        const pokeName = document.querySelector('#poke-name');
         const pokemon = pokeName.value.toLowerCase().replace(/ /g, "-");
         const pokemonData = await createPokemon(pokemon);
         localStorage.setItem('currentPokeId', pokemonData.id);
@@ -14,9 +12,6 @@ getBtn.addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
         const storedId = localStorage.getItem('currentPokeId');
-        if (storedId === null) {
-                localStorage.setItem('currentPokeId', 1);
-        }
         const initialId = storedId ? parseInt(storedId) : 1;
         await createPokemon(initialId);
 })
@@ -71,12 +66,18 @@ const createPkmJson = (pokemonData, pokemonDataSpecies) => {
         pkmJson.name = capitalizeName(pokemonData.name);
         pkmJson.id = pokemonData.id;
         pkmJson.url_img = pokemonData.sprites.other['official-artwork'].front_default;
-        pkmJson.description = pokemonDataSpecies.flavor_text_entries[0].flavor_text; // Improve to get only english text
+        pkmJson.description = getEnglishDescription(pokemonDataSpecies.flavor_text_entries); // Improve to get only english text
         pkmJson.height = pokemonData.height / 10.0;
         pkmJson.weight = pokemonData.weight * 1.0;
 
         return pkmJson;
 }
+
+const getEnglishDescription = flavorTextEntries => {
+        const flavorTextEn = flavorTextEntries.filter(flavorText => flavorText.language.name === 'en');
+
+        return flavorTextEn.pop().flavor_text;
+};
 
 const createCard = (pkmJson) => {
         let card = `
@@ -115,6 +116,7 @@ const capitalizeName = (name) => {
 };
 
 const createPokemon = async (pokemon) => {
+        const cardContainer = document.querySelector('.card-container');
         const pokemonDataArray = await fetchPokemon(pokemon);
         const pokemonData = pokemonDataArray[0];
         const pokemonDataSpecies = pokemonDataArray[1];

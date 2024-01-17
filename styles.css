@@ -1,3 +1,7 @@
+/* * {
+        border: 1px solid black;
+} */
+
 body {
         margin: 0;
         font-family: 'Karla', sans-serif;
@@ -23,6 +27,7 @@ body {
 
 .card-container {
         max-width: 85%;
+        margin-bottom: 1.5rem;
 }
 
 .pkm-artwork {
@@ -43,13 +48,13 @@ body {
 }
 
 .row {
-        margin: 20px;
+        gap: 30px;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
         flex-direction: row;
         padding: 20px;
-        width: 100%;
+        width: 80%;
 }
 
 .btn {
