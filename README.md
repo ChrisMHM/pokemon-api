@@ -5,6 +5,7 @@ Se implementó:
 - Consulta a la PokeAPI.
 - Creación dinámica de cards de cada Pokémon consultado en el input.
 - Almacenamiento en LocalStorage.
+- Recuperar el último Pokémon almacenado en LocalStorage y mostrarlo cuando se vuelve a abrir la página.
 - Avance y retroceso de acuerdo con el Pokémon actual almacenado en LocalStorage.
 
 TODO:
