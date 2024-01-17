@@ -6,13 +6,37 @@ const URL_PKM_SPCS = 'https://pokeapi.co/api/v2/pokemon-species/';
 
 const getPokemonJson = getBtn.addEventListener('click', async () => {
         const pokemon = pokeName.value.toLowerCase().replace(/ /g, "-");
-        const pokemonDataArray = await fetchPokemon(pokemon);
-        const pokemonData = pokemonDataArray[0];
-        const pokemonDataSpecies = pokemonDataArray[1];
-        const pkmJson = createPkmJson(pokemonData, pokemonDataSpecies);
-        cardContainer.innerHTML = createCard(pkmJson);
+        const pokemonData = await createPokemon(pokemon);
+        localStorage.setItem('currentPokeId', pokemonData.id);
         return pkmJson;
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+        const storedId = localStorage.getItem('currentPokeId');
+        const initialId = storedId ? parseInt(storedId) : 1;
+        await createPokemon(initialId);
+})
+
+// obtener el anterior
+//
+//
+// obtener el siguiente
+
+document.getElementById('previous-btn')
+        .addEventListener('click', async () => {
+                const currentPokeId = parseInt(localStorage.getItem('currentPokeId'));
+                const newId = Math.max(1, currentPokeId - 1);
+                const pokemonData = await createPokemon(newId);
+                localStorage.setItem('currentPokeId', pokemonData.id);
+        })
+
+document.getElementById('next-btn')
+        .addEventListener('click', async () => {
+                const currentPokeId = parseInt(localStorage.getItem('currentPokeId'));
+                const newId = currentPokeId + 1;
+                const pokemonData = await createPokemon(newId);
+                localStorage.setItem('currentPokeId', pokemonData.id);
+        })
 
 const fetchPokemon = async (pokemon) => {
         try {
@@ -31,7 +55,6 @@ const fetchPokemon = async (pokemon) => {
         }
 }
 
-
 const createPkmJson = (pokemonData, pokemonDataSpecies) => {
         const pkmJson = {
                 name: '',
@@ -46,7 +69,6 @@ const createPkmJson = (pokemonData, pokemonDataSpecies) => {
         pkmJson.id = pokemonData.id;
         pkmJson.url_img = pokemonData.sprites.other['official-artwork'].front_default;
         pkmJson.description = pokemonDataSpecies.flavor_text_entries[0].flavor_text; // Improve to get only english text
-        console.log(pkmJson.description);
         pkmJson.height = pokemonData.height / 10.0;
         pkmJson.weight = pokemonData.weight * 1.0;
 
@@ -84,3 +106,13 @@ const capitalizeName = (name) => {
                 return word.charAt(0).toUpperCase() + word.slice(1);
         }).join(' ');
 };
+
+const createPokemon = async (pokemon) => {
+        const pokemonDataArray = await fetchPokemon(pokemon);
+        const pokemonData = pokemonDataArray[0];
+        const pokemonDataSpecies = pokemonDataArray[1];
+        const pkmJson = createPkmJson(pokemonData, pokemonDataSpecies);
+        cardContainer.innerHTML = createCard(pkmJson);
+
+        return pokemonData;
+}
