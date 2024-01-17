@@ -3,37 +3,40 @@ const pokeName = document.querySelector('#poke-name');
 const cardContainer = document.querySelector('.card-container');
 const URL_PKM = 'https://pokeapi.co/api/v2/pokemon/';
 const URL_PKM_SPCS = 'https://pokeapi.co/api/v2/pokemon-species/';
+const LAST_PKMN = 1008;
+const FIRST_PKMN = 1;
 
-const getPokemonJson = getBtn.addEventListener('click', async () => {
+getBtn.addEventListener('click', async () => {
         const pokemon = pokeName.value.toLowerCase().replace(/ /g, "-");
         const pokemonData = await createPokemon(pokemon);
         localStorage.setItem('currentPokeId', pokemonData.id);
-        return pkmJson;
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
         const storedId = localStorage.getItem('currentPokeId');
+        if (storedId === null) {
+                localStorage.setItem('currentPokeId', 1);
+        }
         const initialId = storedId ? parseInt(storedId) : 1;
         await createPokemon(initialId);
 })
 
 // obtener el anterior
-//
-//
-// obtener el siguiente
 
 document.getElementById('previous-btn')
         .addEventListener('click', async () => {
                 const currentPokeId = parseInt(localStorage.getItem('currentPokeId'));
-                const newId = Math.max(1, currentPokeId - 1);
+                const newId = currentPokeId === FIRST_PKMN ? Math.max(LAST_PKMN, currentPokeId - 1) : Math.max(FIRST_PKMN, currentPokeId - 1);
                 const pokemonData = await createPokemon(newId);
                 localStorage.setItem('currentPokeId', pokemonData.id);
         })
 
+// obtener el siguiente
+
 document.getElementById('next-btn')
         .addEventListener('click', async () => {
                 const currentPokeId = parseInt(localStorage.getItem('currentPokeId'));
-                const newId = currentPokeId + 1;
+                const newId = currentPokeId === LAST_PKMN ? Math.min(FIRST_PKMN, currentPokeId + 1) : Math.min(LAST_PKMN, currentPokeId + 1);
                 const pokemonData = await createPokemon(newId);
                 localStorage.setItem('currentPokeId', pokemonData.id);
         })
@@ -102,9 +105,13 @@ const createCard = (pkmJson) => {
 };
 
 const capitalizeName = (name) => {
-        return name.split(' ').map(word => {
+        name.split(' ').map(word => {
                 return word.charAt(0).toUpperCase() + word.slice(1);
         }).join(' ');
+
+        return name.split('-').map(word => {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join('-');
 };
 
 const createPokemon = async (pokemon) => {
