@@ -12,6 +12,9 @@ document.querySelector('#get-btn').addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
         const storedId = localStorage.getItem('currentPokeId');
+        if (storedId === null) {
+                localStorage.setItem('currentPokeId', 1);
+        }
         const initialId = storedId ? parseInt(storedId) : 1;
         await createPokemon(initialId);
 })
